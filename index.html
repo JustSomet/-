@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ჩემო მარო ❤️</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, #ffeef2, #f8bbd0, #ffc1e3);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container { z-index: 10; padding: 20px; width: 90%; }
+
+        h1 { color: #d81b60; font-size: 2rem; margin: 20px 0; text-shadow: 1px 1px 2px white; }
+
+        .buttons { display: flex; gap: 15px; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #yesBtn { background-color: #ff4081; color: white; }
+        #noBtn { background-color: #f44336; color: white; }
+
+        .heart {
+            position: absolute;
+            font-size: 25px;
+            pointer-events: none;
+            animation: moveUp 2.5s linear forwards;
+            z-index: 5;
+        }
+
+        @keyframes moveUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .gif-img { width: 220px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <img id="mainGif" class="gif-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4JnB2PTEmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/c76IJLufpN6SULPk77/giphy.gif">
+        <h1 id="questionText">იქნები ჩემი ვალენტინი, მარო? ❤️</h1>
+        <div class="buttons">
+            <button id="yesBtn">კი</button>
+            <button id="noBtn">არა</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionText = document.getElementById('questionText');
+        const mainGif = document.getElementById('mainGif');
+
+        let yesFontSize = 1.2;
+        const messages = [
+            "დარწმუნებული ხარ ბა? 🥺",
+            "ბუბი დაფიქრდი... 💔",
+            "ბოლო ცდაა იცოდე! 😠",
+            "გთხოოოოოვ... ✨",
+            "არ მჯერა! 😭"
+        ];
+        let msgIndex = 0;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '90vh';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2500);
+        }
+
+        noBtn.addEventListener('click', () => {
+            // ყოველ "არა"-ზე ამოდის გულები
+            for(let i=0; i<5; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+            
+            // ტექსტის შეცვლა
+            noBtn.innerText = messages[msgIndex];
+            msgIndex = (msgIndex + 1) % messages.length;
+
+            // "კი" ღილაკის გაზრდა
+            yesFontSize += 0.5;
+            yesBtn.style.fontSize = yesFontSize + "rem";
+            yesBtn.style.padding = (yesFontSize * 12) + "px " + (yesFontSize * 25) + "px";
+        });
+
+        yesBtn.addEventListener('click', () => {
+            // კონფეტის ეფექტი
+            if(window.confetti) {
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+            
+            questionText.innerText = "ვიცოდი რო დამთანხმდებოდი ცხოვრებავ ❤️🥰";
+            mainGif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4JnB2PTEmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/G6N0pDDgDpLjAkpg2A/giphy.gif";
+            noBtn.style.display = 'none';
+            
+            // გულების უწყვეტი წვიმა ბოლოს
+            setInterval(createHeart, 200);
+        });
+    </script>
+</body>
+</html>
